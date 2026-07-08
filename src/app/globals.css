@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS tokens ─────────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --sw-bg:             #F8F9FC;
+    --sw-surface:        #FFFFFF;
+    --sw-sidebar:        #1E1F2E;
+    --sw-sidebar-hover:  #272839;
+    --sw-border:         #E4E7EF;
+    --sw-primary:        #6366F1;
+    --sw-primary-dark:   #4F46E5;
+    --sw-accent:         #8B5CF6;
+    --sw-text:           #0F1629;
+    --sw-muted:          #64748B;
+    --sidebar-w:         240px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--sw-bg);
+    color: var(--sw-text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100dvh;
+  }
+
+  /* Accessible focus ring — indigo, visible to keyboard users only */
+  :focus-visible {
+    outline: 2px solid var(--sw-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  :focus:not(:focus-visible) { outline: none; }
+
+  /* Scrollbar — thin, unobtrusive */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+}
+
+/* ── Reusable component classes ─────────────────────────────────────────────── */
+@layer components {
+
+  /* Page heading */
+  .page-title {
+    @apply text-2xl font-semibold text-sw-text tracking-tight;
+  }
+
+  /* Section label */
+  .section-label {
+    @apply text-2xs font-semibold uppercase tracking-widest text-sw-muted;
+  }
+
+  /* Sidebar nav link */
+  .nav-link {
+    @apply flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium
+           text-slate-400 transition-all duration-150 cursor-pointer select-none
+           hover:bg-[#272839] hover:text-white;
+  }
+
+  /* Active sidebar nav link */
+  .nav-link-active {
+    @apply bg-[#2E2F45] text-white;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-sw-border my-4;
+  }
+
+  /* Shimmer skeleton block */
+  .skeleton {
+    @apply rounded-md bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100
+           bg-[length:800px_100%] animate-shimmer;
+  }
+
+  /* Input — shared styles */
+  .input {
+    @apply w-full rounded-md border border-sw-border bg-sw-surface px-3 py-2
+           text-sm text-sw-text placeholder:text-sw-muted
+           transition-shadow duration-150
+           focus:outline-none focus:ring-2 focus:ring-sw-primary/30 focus:border-sw-primary
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Select */
+  .select {
+    @apply input pr-9 appearance-none cursor-pointer;
+  }
+}
