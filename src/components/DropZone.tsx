@@ -28,11 +28,8 @@ const RULES = ["PDF or image", "Single page", "≤ 3 MB"] as const;
 export default function DropZone({ onFiles, disabled }: Props) {
   const [errors, setErrors] = useState<string[]>([]);
 
-  const onDrop = useCallback(
-    (
-      accepted: File[],
-      rejected: { file: File; errors: { message: string; code: string }[] }[]
-    ) => {
+  const onDrop = useCallback<(acceptedFiles: File[], fileRejections: any[], event: any) => void>(
+    (accepted, rejected) => {
       setErrors([]);
 
       const rejectedFiles: RejectedFile[] = rejected.map(({ file, errors }) => {
