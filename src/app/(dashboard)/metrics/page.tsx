@@ -25,9 +25,14 @@ const RANGES: { label: string; value: Range }[] = [
 
 function buildChartData(items: ExtractionListItem[], range: Range) {
   const now = Date.now();
+  const karachi = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Karachi',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
 
   if (range === "1y") {
-    // Group by calendar month — last 12 months
     const months: { key: string; label: string }[] = [];
     for (let i = 11; i >= 0; i--) {
       const d = new Date(now);
@@ -41,8 +46,12 @@ function buildChartData(items: ExtractionListItem[], range: Range) {
       months.map((m) => [m.key, 0])
     );
     items.forEach((item) => {
-      const d = new Date(item.created_at);
-      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      // Parse ISO string as UTC, convert to Karachi time
+      const utcDate = new Date(item.created_at);
+      const parts = karachi.formatToParts(utcDate);
+      const month = parts.find(p => p.type === 'month')?.value || '01';
+      const year = parts.find(p => p.type === 'year')?.value || '2024';
+      const key = `${year}-${month}`;
       if (key in counts) counts[key]++;
     });
     return months.map((m) => ({ date: m.label, docs: counts[m.key] }));
@@ -53,14 +62,22 @@ function buildChartData(items: ExtractionListItem[], range: Range) {
   const counts: Record<string, number> = {};
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(now - i * 86_400_000);
-    counts[d.toLocaleDateString("en-US", { month: "short", day: "numeric" })] = 0;
+    const parts = karachi.formatToParts(d);
+    const month = parts.find(p => p.type === 'month')?.value || '01';
+    const day = parts.find(p => p.type === 'day')?.value || '01';
+    const label = new Date(d.getFullYear(), parseInt(month) - 1, parseInt(day))
+      .toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    counts[label] = 0;
   }
   items.forEach((item) => {
-    const itemMs = new Date(item.created_at).getTime();
-    if (now - itemMs > days * 86_400_000) return;
-    const label = new Date(item.created_at).toLocaleDateString("en-US", {
-      month: "short", day: "numeric",
-    });
+    const utcDate = new Date(item.created_at);
+    const parts = karachi.formatToParts(utcDate);
+    const month = parts.find(p => p.type === 'month')?.value || '01';
+    const day = parts.find(p => p.type === 'day')?.value || '01';
+    const label = new Date(parseInt(parts.find(p => p.type === 'year')?.value || '2024'), 
+                           parseInt(month) - 1, 
+                           parseInt(day))
+      .toLocaleDateString("en-US", { month: "short", day: "numeric" });
     if (label in counts) counts[label]++;
   });
   return Object.entries(counts).map(([date, docs]) => ({ date, docs }));
