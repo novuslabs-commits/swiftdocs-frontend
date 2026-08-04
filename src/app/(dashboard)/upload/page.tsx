@@ -150,12 +150,13 @@ export default function UploadPage() {
   return (
     <div className="max-w-2xl mx-auto">
       {/* Page header */}
-      <div className="mb-6">
+      <div className="mb-5 sm:mb-6">
         <h1 className="page-title flex items-center gap-2">
-          <UploadCloud size={22} className="text-sw-primary" aria-hidden="true" />
+          <UploadCloud size={20} className="sm:hidden text-sw-primary shrink-0" aria-hidden="true" />
+          <UploadCloud size={22} className="hidden sm:block text-sw-primary shrink-0" aria-hidden="true" />
           Upload
         </h1>
-        <p className="text-sm text-sw-muted mt-1">
+        <p className="mt-1 text-sw-muted text-[clamp(11px,3.2vw,14px)]">
           Process invoices, receipts, purchase orders, and delivery notes with AI extraction.
         </p>
       </div>
