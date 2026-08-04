@@ -99,11 +99,11 @@ export default function DropZone({ onFiles, disabled }: Props) {
 
         <input {...getInputProps()} />
 
-        <div className="flex flex-col items-center gap-4 px-8 py-14 text-center">
+        <div className="flex flex-col items-center gap-3 sm:gap-4 px-4 py-10 sm:px-8 sm:py-14 text-center">
           {/* Icon */}
           <div
             className={cn(
-              "flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-200",
+              "flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-2xl transition-all duration-200",
               isDragReject
                 ? "bg-sw-danger/10 text-sw-danger"
                 : isDragActive
@@ -112,8 +112,12 @@ export default function DropZone({ onFiles, disabled }: Props) {
             )}
           >
             {isDragReject
-              ? <FileWarning size={28} aria-hidden="true" />
-              : <UploadCloud size={28} aria-hidden="true" />
+              ? <FileWarning size={22} className="sm:hidden" aria-hidden="true" />
+              : <UploadCloud size={22} className="sm:hidden" aria-hidden="true" />
+            }
+            {isDragReject
+              ? <FileWarning size={28} className="hidden sm:block" aria-hidden="true" />
+              : <UploadCloud size={28} className="hidden sm:block" aria-hidden="true" />
             }
           </div>
 
@@ -140,13 +144,13 @@ export default function DropZone({ onFiles, disabled }: Props) {
 
           {/* Constraint chips — hidden while dragging to reduce visual noise */}
           {!isDragActive && (
-            <div className="flex flex-wrap items-center justify-center gap-2" aria-label="File requirements">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2" aria-label="File requirements">
               {RULES.map((rule) => (
                 <span
                   key={rule}
                   className={cn(
-                    "inline-flex items-center rounded-full border border-sw-border",
-                    "bg-sw-bg px-3 py-0.5 text-xs font-medium text-sw-muted"
+                    "inline-flex items-center rounded-full border border-sw-border whitespace-nowrap",
+                    "bg-sw-bg px-2.5 py-0.5 sm:px-3 text-[11px] sm:text-xs font-medium text-sw-muted"
                   )}
                 >
                   {rule}
