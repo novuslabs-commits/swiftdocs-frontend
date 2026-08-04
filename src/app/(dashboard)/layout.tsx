@@ -296,7 +296,7 @@ export default function DashboardLayout({
       />
 
       {/* Main content — offset by sidebar on desktop, header on mobile */}
-      <main
+      {/* <main
         className={cn(
           "min-h-dvh",
           "lg:pl-[240px]",   // sidebar width
@@ -307,7 +307,26 @@ export default function DashboardLayout({
           {children}
           <Footer />
         </div>
+      </main> */}
+      <main
+        className={cn(
+          "min-h-dvh flex flex-col", // Added flex flex-col here
+          "lg:pl-[240px]",   // sidebar width
+          "pt-14 lg:pt-0",   // mobile header height
+        )}
+      >
+        {/* Added flex, flex-col, flex-1, and w-full so this container grows */}
+        <div className="max-w-6xl w-full mx-auto px-6 py-8 animate-fade-in flex flex-col flex-1">
+          
+          {/* We wrap children in flex-1. This pushes the Footer to the bottom! */}
+          <div className="flex-1">
+            {children}
+          </div>
+          
+          <Footer />
+        </div>
       </main>
+
     </>
   );
 }
