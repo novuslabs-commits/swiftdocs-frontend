@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Zap, ArrowRight, Mail, Globe, Eye, EyeOff } from "lucide-react";
+import { Zap, ArrowRight, Mail, Globe, Linkedin, Eye, EyeOff } from "lucide-react";
 import { login } from "@/lib/api";
 import { saveToken, clearSessionCaches } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
@@ -111,11 +111,11 @@ export default function LoginPage() {
             <p className="text-base font-semibold text-white/80 mb-4 tracking-tight">NovusLabs</p>
             <div className="flex flex-col gap-3">
               <a
-                href="mailto:novuslabs.team@gmail.com"
+                href="mailto:info@novuslabshq.com"
                 className="flex items-center gap-2.5 text-xs text-white/40 hover:text-white/70 transition-colors w-fit"
               >
                 <Mail size={13} />
-                novuslabs.team@gmail.com
+                info@NovusLabsHQ.com
               </a>
               <a
                 href="https://www.linkedin.com/company/novus-labs-tech"
@@ -123,8 +123,17 @@ export default function LoginPage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 text-xs text-white/40 hover:text-white/70 transition-colors w-fit"
               >
-                <Globe size={13} />
+                <Linkedin size={13} />
                 LinkedIn
+              </a>
+              <a
+                href="https://www.novuslabshq.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 text-xs text-white/40 hover:text-white/70 transition-colors w-fit"
+              >
+                <Globe size={13} />
+                NovusLabsHQ.com
               </a>
             </div>
           </div>
@@ -133,7 +142,7 @@ export default function LoginPage() {
 
       {/* ── Right panel — Form ───────────────────────────────────────────────── */}
       {/* Changed bg-sw-bg to a premium slate gray shade to create clear contrast */}
-      <div className="flex-1 flex flex-col items-center justify-center bg-slate-50/60 px-6 py-12 relative overflow-hidden">
+      <div className="flex-1 flex flex-col items-center justify-center bg-slate-50/60 px-4 sm:px-6 py-10 sm:py-12 relative overflow-y-auto">
         
         {/* Subtle background glow effect on the right panel to balance the layout */}
         <div
@@ -145,15 +154,15 @@ export default function LoginPage() {
         <div className="w-full max-w-md bg-white border border-sw-border shadow-sm rounded-2xl p-8 sm:p-10 relative z-10">
           
           {/* Mobile logo */}
-          <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-sw-primary">
-              <Zap size={14} className="text-white" />
+          <div className="flex items-center gap-2 mb-6 pb-6 border-b border-sw-border lg:hidden lg:mb-0 lg:pb-0 lg:border-0">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-sw-primary shadow-sm">
+              <Zap size={15} className="text-white" />
             </div>
-            <span className="font-semibold text-sw-text">SwiftDocs</span>
+            <span className="font-semibold text-base text-sw-text tracking-tight">SwiftDocs</span>
           </div>
 
           <h1 className="text-2xl font-semibold text-sw-text tracking-tight">Sign in</h1>
-          <p className="mt-1.5 text-sm text-sw-muted">
+          <p className="mt-1.5 text-sw-muted whitespace-nowrap text-[clamp(9.5px,3vw,14px)]">
             Welcome back. Enter your credentials to continue.
           </p>
 
@@ -218,25 +227,27 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* Demo hint callout block tucked neatly inside the main card area */}
           <div className="mt-6 rounded-xl border border-dashed border-sw-border bg-slate-50/50 px-4 py-3">
-            <p className="text-xs text-sw-muted leading-relaxed">
-              <span className="font-semibold text-sw-text">Demo access:</span>{" "}
-              <code className="bg-white px-1.5 py-0.5 rounded border border-sw-border text-[11px] font-mono text-sw-text">demo@swiftlog.com</code> · <code className="bg-white px-1.5 py-0.5 rounded border border-sw-border text-[11px] font-mono text-sw-text">Demo1234</code>
-            </p>
+            <p className="text-xs font-semibold text-sw-text mb-1.5">Demo access</p>
+            <div className="flex items-center gap-x-2 whitespace-nowrap overflow-hidden">
+              <code className="bg-white px-1.5 py-0.5 rounded border border-sw-border font-mono text-sw-text text-[clamp(9.5px,2.5vw,12px)] shrink-0">demo@swiftlog.com</code>
+              <span className="text-sw-border text-xs shrink-0">·</span>
+              <code className="bg-white px-1.5 py-0.5 rounded border border-sw-border font-mono text-sw-text text-[clamp(9.5px,2.5vw,12px)] shrink-0">Demo1234</code>
+            </div>
           </div>
+
         </div>
 
         {/* Mobile footer */}
-        <p className="mt-12 text-xs text-sw-muted text-center lg:hidden relative z-10">
+        <p className="mt-8 text-xs text-sw-muted text-center lg:hidden relative z-10">
           Built by{" "}
-          <a href="https://www.linkedin.com/company/novus-labs-tech" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.novuslabshq.com" target="_blank" rel="noopener noreferrer"
              className="text-sw-primary hover:underline underline-offset-2">
             NovusLabs
           </a>
           {" "}·{" "}
-          <a href="mailto:novuslabs.team@gmail.com" className="hover:text-sw-text transition-colors">
-            novuslabs.team@gmail.com
+          <a href="mailto:info@novuslabshq.com" className="hover:text-sw-text transition-colors">
+            info@NovusLabsHQ.com
           </a>
         </p>
       </div>
