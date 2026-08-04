@@ -225,18 +225,26 @@ export default function DashboardPage() {
 
       {/* Doc type breakdown */}
       {!loading && Object.keys(typeCounts).length > 0 && (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-sw-muted font-medium mr-1">By type:</span>
-          {Object.entries(typeCounts)
-            .sort(([, a], [, b]) => b - a)
-            .map(([type, count]) => (
-              <span key={type} className="inline-flex items-center gap-1.5">
-                <Badge variant={docTypeVariant(type)}>
-                  {DOC_TYPE_LABELS[type] ?? type.replace(/_/g, " ")}
-                </Badge>
-                <span className="text-xs text-sw-muted tabular-nums">{count}</span>
-              </span>
-            ))}
+        <div className="flex items-start gap-2">
+          <span className="text-sw-muted font-medium mr-1 shrink-0 whitespace-nowrap text-[clamp(10px,2.8vw,12px)]">By type:</span>
+          <div className="flex flex-wrap gap-x-3 gap-y-2 flex-1">
+            {Object.entries(typeCounts)
+              .sort(([, a], [, b]) => b - a)
+              .map(([type, count]) => (
+                <span
+                  key={type}
+                  className="inline-flex items-center gap-1.5 whitespace-nowrap w-full sm:w-auto"
+                >
+                  <Badge
+                    variant={docTypeVariant(type)}
+                    className="text-[clamp(9px,2.4vw,11px)]"
+                  >
+                    {DOC_TYPE_LABELS[type] ?? type.replace(/_/g, " ")}
+                  </Badge>
+                  <span className="text-sw-muted tabular-nums text-[clamp(9px,2.6vw,12px)]">{count}</span>
+                </span>
+              ))}
+          </div>
         </div>
       )}
 
