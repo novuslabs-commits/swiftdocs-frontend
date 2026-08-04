@@ -180,13 +180,16 @@ export default function HistoryPage() {
   return (
     <div className="space-y-5">
       {/* ── Header ── */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="page-title flex items-center gap-2">
-            <Clock size={20} className="text-sw-primary" aria-hidden="true" />
-            History
+      {/* Removed flex-wrap so the items stay on the same line */}
+      <div className="flex items-center justify-between gap-2 sm:gap-4">
+        
+        {/* Added min-w-0 so the text can shrink or wrap if the screen gets incredibly tiny */}
+        <div className="min-w-0">
+          <h1 className="page-title flex items-center gap-2 truncate">
+            <Clock size={20} className="text-sw-primary shrink-0" aria-hidden="true" />
+            <span className="truncate">History</span>
           </h1>
-          <p className="text-sm text-sw-muted mt-0.5">
+          <p className="text-sm text-sw-muted mt-0.5 truncate">
             {loading
               ? "Loading…"
               : `${items.length} extraction${items.length !== 1 ? "s" : ""}${hasMore ? "+" : ""}`}
@@ -194,7 +197,7 @@ export default function HistoryPage() {
         </div>
 
         {/* Bulk export */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <Button
             variant="secondary"
             size="sm"
@@ -202,10 +205,15 @@ export default function HistoryPage() {
             disabled={!!exporting || items.length === 0}
             onClick={() => handleExport("xlsx")}
             aria-label="Export filtered results as Excel"
+            // Added h-8 and px-2 to shrink the box, and gap-1 to pull the icon/text together
+            className="h-8 px-2 flex items-center gap-1"
           >
             <FileSpreadsheet size={13} />
-            Export Excel
+            {/* Removed the extra margin (ml-1.5) so they sit closer to the icon */}
+            <span className="hidden sm:inline text-xs">Export Excel</span>
+            <span className="sm:hidden text-xs">Excel</span>
           </Button>
+          
           <Button
             variant="secondary"
             size="sm"
@@ -213,17 +221,22 @@ export default function HistoryPage() {
             disabled={!!exporting || items.length === 0}
             onClick={() => handleExport("csv")}
             aria-label="Export filtered results as CSV"
+            // Added h-8 and px-2 to shrink the box, and gap-1 to pull the icon/text together
+            className="h-8 px-2 flex items-center gap-1"
           >
             <FileDown size={13} />
-            Export CSV
+            {/* Removed the extra margin (ml-1.5) so they sit closer to the icon */}
+            <span className="hidden sm:inline text-xs">Export CSV</span>
+            <span className="sm:hidden text-xs">CSV</span>
           </Button>
         </div>
       </div>
 
       {/* ── Filters ── */}
-      <div className="flex flex-wrap gap-3">
+      {/* grid-cols-2 creates 2 columns on mobile, lg:grid-cols-4 creates 4 columns on large screens */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Vendor search */}
-        <div className="relative">
+        <div className="relative w-full">
           <Search
             size={14}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-sw-muted pointer-events-none"
@@ -234,7 +247,8 @@ export default function HistoryPage() {
             placeholder="Filter by vendor…"
             value={vendor}
             onChange={(e) => setVendor(e.target.value)}
-            className="input pl-8 w-52"
+            // Removed col-span-2 so it neatly fits in 1 of the 2 grid columns
+            className="input pl-8 w-full text-[clamp(10px,2.5vw,14px)]"
             aria-label="Filter by vendor"
           />
         </div>
@@ -243,7 +257,8 @@ export default function HistoryPage() {
         <select
           value={docType}
           onChange={(e) => setDocType(e.target.value)}
-          className="select w-44"
+          // Removed col-span-2 so it sits next to the vendor search
+          className="select w-full text-[clamp(10px,2.5vw,14px)]"
           aria-label="Filter by document type"
         >
           {DOC_TYPES.map((t) => (
@@ -252,25 +267,28 @@ export default function HistoryPage() {
         </select>
 
         {/* Date range */}
-        <label className="flex items-center gap-1.5 text-xs text-sw-muted">
-          From
+        <label className="flex items-center gap-1.5 text-sw-muted w-full min-w-0 text-[clamp(11px,1.5vw,12px)]">
+          <span className="shrink-0">From</span>
           <input
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
             max={dateTo || undefined}
-            className="input w-36"
+            // min-w-0 allows the input to shrink below its browser-default width
+            className="input w-full min-w-0 text-[clamp(8.5px,2.5vw,14px)]"
             aria-label="From date (inclusive)"
           />
         </label>
-        <label className="flex items-center gap-1.5 text-xs text-sw-muted">
-          To
+        
+        <label className="flex items-center gap-1.5 text-sw-muted w-full min-w-0 text-[clamp(11px,1.5vw,12px)]">
+          <span className="shrink-0">To</span>
           <input
             type="date"
             value={dateTo}
             onChange={(e) => setDateTo(e.target.value)}
             min={dateFrom || undefined}
-            className="input w-36"
+            // min-w-0 allows the input to shrink below its browser-default width
+            className="input w-full min-w-0 text-[clamp(8.5px,2.5vw,14px)]"
             aria-label="To date (inclusive)"
           />
         </label>
