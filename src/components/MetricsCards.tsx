@@ -17,7 +17,7 @@ export default function MetricsCards({ metrics, totalFieldsFound }: Props) {
     : "—";
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
       <Stat
         label="Docs Extracted"
         value={metrics.completed}
