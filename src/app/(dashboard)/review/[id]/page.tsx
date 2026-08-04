@@ -129,75 +129,97 @@ export default function ReviewPage() {
   return (
     <div className="space-y-5">
       {/* ── Header ── */}
-      <div className="flex flex-wrap items-start gap-4 justify-between">
-        <div>
-          <Link
-            href="/history"
-            className="flex items-center gap-1 text-xs text-sw-muted hover:text-sw-text mb-2 transition-colors"
-          >
-            <ArrowLeft size={12} /> History
-          </Link>
-          <h1 className="page-title truncate max-w-xl" title={extraction.filename ?? "Document"}>
-            {extraction.filename ?? "Document"}
-          </h1>
+      <div className="space-y-4">
+        
+        {/* Top Row */}
+        <div className="flex items-start justify-between gap-2 sm:gap-4">
+          <div className="min-w-0 flex-1">
+            <Link
+              href="/history"
+              className="flex items-center gap-1 text-xs text-sw-muted hover:text-sw-text mb-2 transition-colors w-fit"
+            >
+              <ArrowLeft size={12} /> History
+            </Link>
+            
+            <h1 
+              className="page-title truncate text-[clamp(12px,4vw,24px)]" 
+              title={extraction.filename ?? "Document"}
+            >
+              {extraction.filename ?? "Document"}
+            </h1>
+          </div>
 
-          {/* Meta pills */}
-          <div className="flex flex-wrap items-center gap-2 mt-2">
-            {extraction.doc_type && (
-              <Badge variant={docTypeVariant(extraction.doc_type)}>
-                {docTypeLabel(extraction.doc_type)}
-              </Badge>
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 mt-6">
+            {saving && (
+              <span className="text-xs text-sw-primary animate-pulse">Saving…</span>
             )}
-            {extraction.overall_confidence != null && (
-              <Badge variant={confidenceVariant(extraction.overall_confidence)}>
-                {confPct}% confidence
-              </Badge>
-            )}
-            <span className="text-xs text-sw-muted flex items-center gap-1">
-              <Layers size={11} aria-hidden="true" />
-              {extraction.fields_found ?? "?"}/{extraction.fields_total ?? "?"} fields found
-            </span>
-            {timeSecs && (
-              <span className="text-xs text-sw-muted flex items-center gap-1">
-                <Clock size={11} aria-hidden="true" />
-                {timeSecs}s
-              </span>
-            )}
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleExport("xlsx")}
+              aria-label="Export as Excel"
+              className="h-8 px-2 flex items-center gap-1"
+            >
+              <FileSpreadsheet size={13} />
+              <span className="hidden sm:inline text-xs">Export Excel</span>
+              <span className="sm:hidden text-xs">Excel</span>
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => handleExport("csv")}
+              aria-label="Export as CSV"
+              className="h-8 px-2 flex items-center gap-1"
+            >
+              <FileDown size={13} />
+              <span className="hidden sm:inline text-xs">Export CSV</span>
+              <span className="sm:hidden text-xs">CSV</span>
+            </Button>
           </div>
         </div>
 
-        {/* Export buttons */}
-        <div className="flex items-center gap-2 shrink-0">
-          {saving && (
-            <span className="text-xs text-sw-primary animate-pulse">Saving…</span>
+        {/* Bottom Row: Restored to a single flex row with horizontal scroll on mobile */}
+        <div className="flex items-center gap-1 sm:gap-1 w-full overflow-x-auto pb-1">
+          {extraction.doc_type && (
+            <Badge 
+              variant={docTypeVariant(extraction.doc_type)} 
+              className="shrink-0 whitespace-nowrap uppercase text-[clamp(7px,2vw,12px)] px-2 py-0.5"
+            >
+              {docTypeLabel(extraction.doc_type)}
+            </Badge>
           )}
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => handleExport("xlsx")}
-            aria-label="Export as Excel"
-          >
-            <FileSpreadsheet size={13} />
-            Excel
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => handleExport("csv")}
-            aria-label="Export as CSV"
-          >
-            <FileDown size={13} />
-            CSV
-          </Button>
+          
+          {extraction.overall_confidence != null && (
+            <Badge 
+              variant={confidenceVariant(extraction.overall_confidence)} 
+              className="shrink-0 whitespace-nowrap uppercase text-[clamp(7px,2vw,12px)] px-2 py-0.5"
+            >
+              {confPct}% confidence
+            </Badge>
+          )}
+          
+          <span className="shrink-0 whitespace-nowrap text-[clamp(7px,2vw,12px)] text-sw-muted flex items-center gap-1.5">
+            <Layers size={11} aria-hidden="true" />
+            {extraction.fields_found ?? "?"}/{extraction.fields_total ?? "?"} fields
+          </span>
+          
+          {timeSecs && (
+            <span className="shrink-0 whitespace-nowrap text-[clamp(7px,2vw,12px)] text-sw-muted flex items-center gap-1.5">
+              <Clock size={11} aria-hidden="true" />
+              {timeSecs}s
+            </span>
+          )}
         </div>
       </div>
 
       {/* ── Two-column layout ── */}
       <div className="grid lg:grid-cols-[300px_1fr] gap-5 items-start">
+        
         {/* Left: document preview */}
-        <Card className="sticky top-6">
+        {/* Changed `sticky` to `lg:sticky lg:top-6` so it only sticks on wide screens */}
+        <Card className="lg:sticky lg:top-6">
           <CardHeader>
-            <CardTitle>Document Preview</CardTitle>
+            <CardTitle className="text-[clamp(14px,3vw,18px)]">Document Preview</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {extraction.file_url && isPdf(extraction.file_url) ? (
@@ -219,18 +241,19 @@ export default function ReviewPage() {
                 />
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-52 gap-2 text-sw-muted text-sm bg-sw-bg">
+              <div className="flex flex-col items-center justify-center h-52 gap-2 text-sw-muted bg-sw-bg">
                 <ImageIcon size={28} className="opacity-30" />
-                <span>Preview not available</span>
-                <span className="text-xs opacity-60">Download to view this file</span>
+                <span className="text-[clamp(11px,2vw,14px)]">Preview not available</span>
+                <span className="text-[clamp(9px,1.5vw,12px)] opacity-60">Download to view this file</span>
               </div>
             )}
+            
             {/* Download buttons */}
             <div className="flex gap-2 p-3 border-t border-sw-border rounded-b-lg">
               <Button
                 variant="secondary"
                 size="sm"
-                className="flex-1"
+                className="flex-1 text-[clamp(11px,2vw,14px)]"
                 onClick={() => handleDownload("pdf")}
                 aria-label="Download as PDF"
               >
@@ -240,7 +263,7 @@ export default function ReviewPage() {
               <Button
                 variant="secondary"
                 size="sm"
-                className="flex-1"
+                className="flex-1 text-[clamp(11px,2vw,14px)]"
                 onClick={() => handleDownload("image")}
                 aria-label="Download as Image"
               >
@@ -254,18 +277,21 @@ export default function ReviewPage() {
         {/* Right: extraction table */}
         <Card className="overflow-hidden">
           <CardHeader>
-            <CardTitle>Extracted Fields</CardTitle>
-            <span className="text-xs text-sw-muted">
+            <CardTitle className="text-[clamp(10px,3vw,18px)]">Extracted Fields</CardTitle>
+            <span className="text-[clamp(10px,1.5vw,12px)] text-sw-muted">
               Click <strong>Edit</strong> to correct a value
             </span>
           </CardHeader>
           <div className="overflow-x-auto">
-            <ExtractionTable
-              fields={extraction.fields}
-              confidenceScores={extraction.confidence_scores}
-              extractionId={extraction.extraction_id}
-              onCorrection={handleCorrection}
-            />
+            {/* Wrapper added to enforce a scaling baseline for the table */}
+            <div className="text-[clamp(11px,2vw,14px)] min-w-max md:min-w-0">
+              <ExtractionTable
+                fields={extraction.fields}
+                confidenceScores={extraction.confidence_scores}
+                extractionId={extraction.extraction_id}
+                onCorrection={handleCorrection}
+              />
+            </div>
           </div>
         </Card>
       </div>
